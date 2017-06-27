@@ -1,0 +1,103 @@
+<ul *ngIf="loginView!==3" class="nav nav-tabs">
+  <button id="loginBtn" [ngClass]="{'btn-info': loginView==1}" class="btn btn-sm" (click)="loginButtonPressed()">Login</button>
+  <button id="registerBtn" [ngClass]="{'btn-info': loginView==2}" class="btn btn-sm" (click)="loginButtonPressed()">Register</button>
+</ul>
+<ul *ngIf="loginView==3" class="nav nav-tabs">
+  <p>{{nameOfUser}} </p>&nbsp;
+  <button class="btn btn-sm btn-warning" (click)="logoutButtonPressed()">Logout</button>
+</ul>
+
+
+  <div *ngIf="loginView==1">
+    <h3>Login</h3>
+    <form [formGroup]="loginForm" (ngSubmit)="loginUser(loginForm.value)">
+      <div class="form-group">
+        <input type="text" formControlName="loginUsername" class="form-control" aria-describedby="loginUsernameHelp" placeholder="Username">
+        <small *ngIf="!loginForm.controls['loginUsername'].valid && loginForm.controls['loginUsername'].touched" id="loginUsernameHelp" class="alert form-text">Username can't be empty!</small>
+      </div>
+
+      <div class="form-group">
+        <input type="text" formControlName="loginPassword" class="form-control" id="loginPassword" aria-describedby="loginPasswordHelp" placeholder="Password">
+      </div>
+
+      <div class="form-group">
+        <input type="submit" class="btn btn-success btn-sm" [disabled]="!loginForm.valid" value="Login">
+        <small *ngIf="!userFound" class="alert form-text">Username/Password is not correct!</small>
+      </div>
+      
+    </form>
+  </div>
+
+
+
+  <div *ngIf="loginView==2">
+    <h3>Register</h3>
+    <form [formGroup]="registerForm" (ngSubmit)="addUser(registerForm.value)">
+      <div class="form-group">
+        <input type="text" formControlName="registerUsername" class="form-control" aria-describedby="registerUsernameHelp" placeholder="Username">
+        <small *ngIf="!registerForm.controls['registerUsername'].valid && registerForm.controls['registerUsername'].touched" id="registerUsernameHelp" class="alert form-text">Username can't be empty!</small>
+      </div>
+
+      <div class="form-group">
+        <input type="text" formControlName="registerPassword" class="form-control" aria-describedby="registerPasswordHelp" placeholder="Password">
+        <small *ngIf="!registerForm.controls['registerPassword'].valid && registerForm.controls['registerPassword'].touched" id="registerPasswordHelp" class="alert form-text">Password can't be empty!</small>
+      </div>
+
+      <div class="form-group">
+        <input type="text" formControlName="registerName" class="form-control" aria-describedby="registerNameHelp" placeholder="Your name">
+        <small *ngIf="!registerForm.controls['registerName'].valid && registerForm.controls['registerName'].touched" id="registerNameHelp" class="alert form-text">Your name can't be empty!</small>
+      </div>
+
+      <div class="form-group">
+        <input type="submit" class="btn btn-success btn-sm" [disabled]="!registerForm.valid" value="SignIn">
+      </div>
+      
+    </form>  
+  </div>    
+    
+
+  <div *ngIf="loginView==3">
+    <h3>New transaction</h3>
+    <form [formGroup]="transactionForm" novalidate (ngSubmit)="addTransaction(transactionForm.value)">
+      <div class="form-group">
+        <input type="date" formControlName="transDate" class="form-control"> 
+        <small *ngIf="!transactionForm.controls['transDate'].valid && transactionForm.controls['transDate'].touched" class="alert form-text">Date of transaction is Required!</small>
+      </div>
+
+  <div class="form-group">
+    <div class="btn-group">
+      <label class="btn btn-outline-info" [class.active]="transactionForm.controls['transIncome'].value" (click)="costChecked(false)">
+        <input type="radio" formControlName="transIncome" value="false">Cost
+      </label>
+      <label class="btn btn-outline-info" [class.active]="!transactionForm.controls['transIncome'].value" (click)="costChecked(true)">
+        <input type="radio" formControlName="transIncome" value="true">Income
+      </label>
+    </div>
+  </div>
+
+<select formControlName="transSubCategory" class="custom-select" (ngModelChange)="subCatChanged($event)">
+   <option value="0" selected disabled>Select a sub-category</option>
+   <option *ngFor="let cat of subCats"
+     [value]="cat.id">
+        {{cat.name}}
+   </option>
+</select>
+
+<select formControlName="transCategory" class="custom-select">
+   <option value="0" selected disabled>Select a Category</option>
+   <option *ngFor="let cat of Cats"
+     [value]="cat.id">
+        {{cat.name}}
+   </option>
+</select>
+
+      <div class="form-group">
+        <input type="number" formControlName="transPrice" class="form-control"> 
+      </div>
+
+      <div class="form-group">
+        <input type="submit" class="btn btn-success btn-sm" [disabled]="!transactionForm.valid" value="Save">
+      </div>
+    </form>  
+{{ transactionForm.value | json  }}
+  </div>

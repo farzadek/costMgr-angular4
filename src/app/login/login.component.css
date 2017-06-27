@@ -1,0 +1,30 @@
+.nav-tabs{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.nav-tabs button{
+    cursor: pointer;
+}
+.alert{
+    animation: 2s alertAnim forwards;
+    padding: .2rem .75rem;
+    border: none;
+    color:#bc8583;
+}
+.form-text{
+    margin-top: 0;
+}
+@keyframes alertAnim{
+    from{
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    to{
+        opacity: 100;
+        transform: translateY(0);
+    }    
+}
+
+.red{
+    color:red !important;
+}
